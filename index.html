@@ -22,8 +22,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 核心修改：继续往上提，从 -60px 改为 -100px */
-            margin-top: -180px; 
+            /* 核心修改：整体向上偏移 100px */
+            margin-top: -100px; 
         }
 
         .baidu-logo {
@@ -69,6 +69,7 @@
             color: #333; 
         }
 
+        /* 适配深色模式 */
         @media (prefers-color-scheme: dark) {
             body { background-color: #1c1c1e; }
             input[type="text"] {
@@ -86,16 +87,20 @@
 </head>
 <body>
     <div class="search-container">
+        <!-- 百度 Logo -->
         <img src="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png" alt="Baidu Logo" class="baidu-logo">
         
+        <!-- 搜索框区域 -->
         <div class="search-wrapper">
             <form action="https://www.baidu.com/s" method="GET" onsubmit="return true;">
+                <!-- 搜索框：去掉了提示文字，保留了回车提交和自动聚焦 -->
                 <input 
                     type="text" 
                     name="wd" 
                     autocomplete="off" 
                     autofocus>
                 
+                <!-- 放大镜图标 -->
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -105,4 +110,3 @@
     </div>
 </body>
 </html>
-
