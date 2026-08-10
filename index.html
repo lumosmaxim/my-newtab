@@ -18,8 +18,8 @@
 
         /* 整体容器，让Logo和搜索框垂直排列并居中对齐 */
         .search-container {
-            width: 80%;
-            max-width: 600px;
+            width: 90%; /* 稍微增加整体宽度占比 */
+            max-width: 700px; /* 加长搜索框 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -27,15 +27,21 @@
 
         /* 百度 Logo 样式 */
         .baidu-logo {
-            width: 220px;       /* 适合平板的宽度 */
-            margin-bottom: 30px; /* 与搜索框保持间距 */
+            width: 220px;
+            margin-bottom: 30px;
             pointer-events: none; /* 防止Logo被意外拖动 */
+        }
+
+        /* 搜索框外层包裹，用于定位放大镜图标 */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
         }
 
         /* 搜索框核心样式 */
         input[type="text"] {
             width: 100%;
-            padding: 18px 24px;
+            padding: 18px 50px 18px 24px; /* 右侧留出50px空间给放大镜 */
             font-size: 18px;
             border: none;
             border-radius: 16px;
@@ -49,6 +55,24 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
+        /* 放大镜图标样式 */
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%); /* 垂直居中 */
+            width: 20px;
+            height: 20px;
+            color: #999; /* 默认浅灰色 */
+            pointer-events: none; /* 让点击事件穿透图标，直接触发输入框 */
+            transition: color 0.3s ease;
+        }
+
+        /* 当输入框被点击聚焦时，放大镜颜色变深 */
+        input[type="text"]:focus ~ .search-icon {
+            color: #333; 
+        }
+
         /* 适配深色模式 */
         @media (prefers-color-scheme: dark) {
             body { background-color: #1c1c1e; }
@@ -60,24 +84,32 @@
             input[type="text"]:focus {
                 box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
             }
+            .search-icon { color: #888; }
+            input[type="text"]:focus ~ .search-icon { color: #fff; }
         }
     </style>
 </head>
 <body>
     <div class="search-container">
-        <!-- 新增的百度 Logo -->
+        <!-- 百度 Logo -->
         <img src="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png" alt="Baidu Logo" class="baidu-logo">
         
-        <!-- 搜索框 -->
-        <form action="https://www.baidu.com/s" method="GET" onsubmit="return true;">
-            <input 
-                type="text" 
-                name="wd" 
-                placeholder="百度一下..." 
-                autocomplete="off" 
-                autofocus>
-        </form>
+        <!-- 搜索框区域 -->
+        <div class="search-wrapper">
+            <form action="https://www.baidu.com/s" method="GET" onsubmit="return true;">
+                <input 
+                    type="text" 
+                    name="wd" 
+                    placeholder="百度一下..." 
+                    autocomplete="off" 
+                    autofocus>
+                <!-- 内嵌的放大镜 SVG 图标 -->
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </form>
+        </div>
     </div>
 </body>
 </html>
-
