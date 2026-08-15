@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>New Tab</title>
     <style>
-        /* 全局样式 */
+        /* 全局样式重置 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             outline: none;
-            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff; /* 纯白背景 */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -25,10 +25,10 @@
             overflow: hidden;
         }
 
-        /* 标题区域 */
+        /* 标题样式：加粗且更具现代感 */
         .title-container {
             position: absolute;
-            top: 33%; /* 位于屏幕三分之一处 */
+            top: 33%;
             transform: translateY(-50%);
             width: 100%;
             display: flex;
@@ -37,43 +37,51 @@
         }
 
         h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #1d1d1f; /* iOS 深灰黑 */
-            letter-spacing: -0.5px;
-            margin-bottom: 20px; /* 标题与搜索框的间距 */
+            font-size: 3.5rem;
+            font-weight: 800; /* 极粗字体 */
+            color: #1d1d1f;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        /* 搜索框容器 */
+        /* 立体玻璃搜索框 */
         .search-wrapper {
             position: absolute;
-            top: calc(33% + 60px); /* 标题下方 */
-            width: 85%; /* 适配平板宽度 */
+            top: calc(33% + 60px);
+            width: 85%;
             max-width: 800px;
             height: 64px;
             display: flex;
             align-items: center;
             
-            /* iOS 玻璃拟态核心代码 */
-            background-color: rgba(255, 255, 255, 0.75); /* 半透明白 */
-            backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+            /* 玻璃拟态核心 */
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 0, 0, 0.08); /* 极淡的边框 */
-            border-radius: 18px; /* 大圆角 */
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); /* 柔和阴影 */
             
+            /* 立体阴影与边框 */
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.06), /* 外部柔和阴影 */
+                0 2px 8px rgba(0, 0, 0, 0.04),  /* 贴近表面的阴影 */
+                inset 0 1px 1px rgba(255, 255, 255, 0.9); /* 内部高光，增强玻璃厚度 */
+            
+            border-radius: 18px;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* 聚焦时的效果 */
+        /* 聚焦时增强立体感 */
         .search-wrapper:focus-within {
             background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.08),
+                0 4px 12px rgba(0, 0, 0, 0.05),
+                inset 0 1px 1px rgba(255, 255, 255, 1);
             transform: scale(1.01);
         }
 
-        /* 左侧图标按钮（沉浸式） */
+        /* 沉浸式图标按钮 */
         .engine-btn {
             width: 64px;
             height: 100%;
@@ -85,9 +93,7 @@
             transition: opacity 0.2s;
         }
 
-        .engine-btn:active {
-            opacity: 0.6;
-        }
+        .engine-btn:active { opacity: 0.6; }
 
         .engine-icon {
             width: 28px;
@@ -96,7 +102,7 @@
             transition: transform 0.3s ease;
         }
 
-        /* 输入框 */
+        /* 输入框样式 */
         .search-input {
             flex-grow: 1;
             height: 100%;
@@ -106,67 +112,55 @@
             color: #1d1d1f;
             padding-right: 20px;
         }
-
-        .search-input::placeholder {
-            color: #86868b; /* iOS 占位符灰色 */
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- 标题 -->
     <div class="title-container">
         <h1>Explore</h1>
     </div>
 
-    <!-- 搜索框 -->
     <div class="search-wrapper">
-        <!-- 搜索引擎切换按钮 -->
         <div class="engine-btn" id="engineBtn" title="切换搜索引擎">
-            <!-- 默认显示 Google -->
-            <img src="https://www.google.com/favicon.ico" alt="Engine" class="engine-icon" id="engineIcon">
+            <!-- 默认显示高清 Google SVG -->
+            <img src="" alt="Engine" class="engine-icon" id="engineIcon">
         </div>
-        
-        <!-- 输入框 -->
-        <input type="text" class="search-input" id="searchInput" placeholder="Search..." autocomplete="off">
+        <input type="text" class="search-input" id="searchInput" autocomplete="off">
     </div>
 
     <script>
-        // 定义搜索引擎配置
+        // 使用内嵌的 SVG 确保在任何分辨率下都绝对清晰
         const engines = [
             {
                 name: 'Google',
                 url: 'https://www.google.com/search?q=',
-                icon: 'https://www.google.com/favicon.ico'
+                icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy4yMWw2Ljg1LTYuODVDMzUuOSAyLjM4IDI5LjQ3IDAgMjQgMCAxNC42MiAwIDYuNTEgNS4zOCAyLjU2IDEzLjIybDcuOTggNi4xOUMxMi40MyAxMy44NSAxNy43NCA5LjUgMjQgOS41eiIvPjxwYXRoIGZpbGw9IiMzNEE4NTMiIGQ9Ik00NS40NCAyNGMwLTMuMTgtLjI4LTYuMjMtLjgzLTkuMThIMjR2MTcuNThoMTIuMDRjLTEuNzUgNC44NS02LjM3IDguMzItMTEuODIgOC4zMmMtNy4wNyAwLTEzLjA2LTQuNzctMTUuMjEtMTEuMjNsLTcuOTggNi4xOUM1LjUxIDQyLjYyIDE0LjA4IDQ4IDI0IDQ4YzguMTMgMCAxNC45My0yLjY4IDE5Ljg5LTcuMzUgNC42NC00LjM1IDcuNTUtMTAuNjIgNy41NS0xNi42NXoiLz48cGF0aCBmaWxsPSIjNEE5MEUyIiBkPSJNMTAuNTMgMzEuOTlsLTcuOTgtNi4xOUMuNTUgMzEuODIgMCAzNy44NSAwIDI0YzAtNi42MiAyLjQzLTEyLjY4IDYuNTQtMTcuMzJsNy45OCA2LjE5QzEyLjQzIDE4LjE1IDkuNSAyMC44OSA5LjUgMjRjMCAzLjExIDEuMDMgNS44NSAyLjgzIDguMDR6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTI0IDQ4YzUuNDcgMCAxMS44OS0yLjM4IDE2LjA0LTYuMzVsLTcuOTgtNi4xOUMyOS41NyAzNy41NSAyNi40IDM4LjUgMjQgMzguNWMtNi4yNiAwLTExLjU3LTQuMjctMTMuNTItMTAuMDFsLTcuOTggNi4xOUM1LjUxIDQyLjYyIDE0LjA4IDQ4IDI0IDQ4eiIvPjwvc3ZnPg=='
             },
             {
                 name: 'Baidu',
                 url: 'https://www.baidu.com/s?wd=',
-                // 使用百度官方高清 Logo 链接，确保是百度样式
                 icon: 'https://www.baidu.com/favicon.ico' 
             },
             {
                 name: 'Bing',
                 url: 'https://cn.bing.com/search?q=',
-                icon: 'https://bing.com/favicon.ico'
+                // Bing 高清蓝色 b 图标
+                icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwODk3YiI+PHBhdGggZD0iTTUgM2wtMS41IDEuNSAxMS41IDExLjVMMTMuNSAxNy41bDEuNSAxLjUgMy0zLTEuNS0xLjVMMTggMTNsMS41IDEuNSAxLjUtMS41TDE5LjUgMTIgMjEgMTAuNSAxOS41IDkgMTggMTAuNSAxNi41IDkgMTUgMTAuNSAxMy41IDkgMTIgMTAuNSAxMC41IDkgOSA3LjUgNy41IDkgNiA3LjUgNC41IDZ6Ii8+PC9zdmc+'
             }
         ];
 
-        let currentIndex = 0; // 默认 Google
-        
+        let currentIndex = 0;
         const engineBtn = document.getElementById('engineBtn');
         const engineIcon = document.getElementById('engineIcon');
         const searchInput = document.getElementById('searchInput');
 
-        // 初始化图标
+        // 初始化
         updateIcon();
 
-        // 点击图标切换逻辑
+        // 点击切换
         engineBtn.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % engines.length;
             
-            // 添加一个小动画让切换更生动
             engineIcon.style.transform = 'scale(0.5) rotate(-10deg)';
             engineIcon.style.opacity = '0';
             
@@ -176,31 +170,24 @@
                 engineIcon.style.opacity = '1';
             }, 150);
 
-            // 切换后自动聚焦输入框
             searchInput.focus();
         });
 
         function updateIcon() {
             engineIcon.src = engines[currentIndex].icon;
-            // 动态修改 placeholder 提示当前引擎（可选，若不需要可删除下一行）
-            // searchInput.placeholder = `Search with ${engines[currentIndex].name}...`; 
         }
 
-        // 监听回车键搜索
+        // 回车搜索
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const query = searchInput.value.trim();
                 if (query) {
-                    const targetUrl = engines[currentIndex].url + encodeURIComponent(query);
-                    window.location.href = targetUrl;
+                    window.location.href = engines[currentIndex].url + encodeURIComponent(query);
                 }
             }
         });
         
-        // 页面加载后自动聚焦
-        window.onload = () => {
-            searchInput.focus();
-        };
+        window.onload = () => searchInput.focus();
     </script>
 </body>
 </html>
