@@ -5,117 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>New Tab</title>
     <style>
-        /* 全局样式 */
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-            background-color: #ffffff;
-            height: 100vh; width: 100vw;
-            overflow: hidden;
-            display: flex; flex-direction: column; align-items: center;
+        /* 全局样式重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 标题 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff; /* 纯白背景 */
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 标题：加粗、现代无衬线字体 */
         .title {
-            margin-top: 28vh;
-            font-size: 3.5rem; font-weight: 800; color: #000000;
-            letter-spacing: -1px; margin-bottom: 30px; user-select: none;
+            margin-top: 28vh; /* 位于屏幕上方约 1/3 处 */
+            font-size: 3.5rem;
+            font-weight: 800; /* 特粗 */
+            color: #000000;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            user-select: none;
         }
 
         /* 立体玻璃搜索框 */
         .search-container {
-            position: relative; width: 85%; max-width: 700px; height: 64px;
-            display: flex; align-items: center;
+            position: relative;
+            width: 85%; /* 适配平板宽度 */
+            max-width: 700px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            
+            /* 玻璃拟态核心 */
             background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 32px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            
+            /* 边框与圆角 */
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 32px;
+            
+            /* 立体阴影：模拟悬浮感 */
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.08), /* 底部大阴影 */
+                0 2px 8px rgba(0, 0, 0, 0.04),   /* 顶部环境光 */
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5); /* 内部高光 */
+            
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
+        /* 聚焦时的微交互 */
         .search-container:focus-within {
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
-            transform: translateY(-2px); background: rgba(255, 255, 255, 0.85);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.12),
+                0 4px 12px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.85);
         }
 
-        /* 沉浸式图标按钮 */
+        /* 左侧图标按钮：沉浸式设计 */
         .engine-btn {
-            width: 50px; height: 100%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; flex-shrink: 0;
-        }
-        .engine-btn:active { opacity: 0.7; }
-
-        /* 纯 CSS 图标样式 */
-        .icon {
-            width: 26px; height: 26px; transition: all 0.3s ease;
-        }
-        /* 百度：蓝色圆角方块 */
-        .icon-baidu { background-color: #2932E1; border-radius: 6px; }
-        /* 必应：青色圆角方块 */
-        .icon-bing { background-color: #00809d; border-radius: 6px; }
-        /* 谷歌：彩色圆点 */
-        .icon-google {
-            background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 73% / 100% 100% no-repeat;
-            border-radius: 50%;
-            -webkit-mask-image: radial-gradient(circle 11px at center, transparent 6px, black 6.5px);
-            mask-image: radial-gradient(circle 11px at center, transparent 6px, black 6.5px);
+            width: 50px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
         }
 
-        /* 输入框 */
+        .engine-btn:active {
+            opacity: 0.6;
+        }
+
+        /* 图标图片样式 */
+        .engine-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            transition: transform 0.3s ease, opacity 0.2s ease;
+        }
+
+        /* 输入框样式 */
         .search-input {
-            flex: 1; height: 100%; border: none; background: transparent;
-            font-size: 1.2rem; color: #333; padding-right: 20px;
+            flex: 1;
+            height: 100%;
+            border: none;
+            background: transparent;
+            font-size: 1.2rem;
+            color: #333;
+            padding-right: 20px;
         }
-        .search-input::placeholder { color: transparent; }
+
+        /* 彻底取消文字提示 */
+        .search-input::placeholder {
+            color: transparent;
+        }
     </style>
 </head>
 <body>
 
+    <!-- 标题 -->
     <div class="title">Explore</div>
 
+    <!-- 搜索组件 -->
     <div class="search-container">
-        <div class="engine-btn" id="engineBtn">
-            <!-- 默认显示百度图标 -->
-            <div id="iconBox" class="icon icon-baidu"></div>
+        <!-- 切换按钮 -->
+        <div class="engine-btn" id="engineBtn" title="切换搜索引擎">
+            <img src="" alt="Engine" class="engine-icon" id="engineIcon">
         </div>
+        
+        <!-- 搜索输入框 -->
         <input type="text" class="search-input" id="searchInput" autocomplete="off">
     </div>
 
     <script>
+        // 定义搜索引擎配置
+        // 使用官方高清 PNG/SVG 链接，确保清晰度
         const engines = [
-            { name: 'baidu', url: 'https://www.baidu.com/s?wd=', cssClass: 'icon-baidu' },
-            { name: 'google', url: 'https://www.google.com/search?q=', cssClass: 'icon-google' },
-            { name: 'bing', url: 'https://cn.bing.com/search?q=', cssClass: 'icon-bing' }
+            {
+                name: 'baidu',
+                url: 'https://www.baidu.com/s?wd=',
+                icon: 'https://www.baidu.com/img/flexible/logo/pc/result.png' // 百度高清 Logo
+            },
+            {
+                name: 'google',
+                url: 'https://www.google.com/search?q=',
+                icon: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png' // Google 高清彩色 Logo
+            },
+            {
+                name: 'bing',
+                url: 'https://cn.bing.com/search?q=',
+                icon: 'https://bing.com/favicon.ico' // Bing 官方图标 (若需更高清可替换为 Bing Logo PNG)
+            }
         ];
+
+        // 默认备用图标 (防止网络加载失败)
+        const defaultIcon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzk5OSI+PHBhdGggZD0iTTE1LjUgMTRoLS43OWwtLjI4LS4yN0E2LjQ3MSA2LjQ3MSAwIDAgMCAxNiA5LjUgNi41IDYuNSAwIDEgMCA5LjUgMTZjMS42MSAwIDMuMDktLjU5IDQuMjMtMS41N2wuMjcuMjh2Ljc5bDUgNC45OUwyMC40OSAxOWwtNC45OS01em0tNiAwQzcuMDEgMTQgNSAxMS45OSA1IDkuNVM3LjAxIDUgOS41IDUgMTQgNy4wMSAxNCA5LjUgMTEuOTkgMTQgOS41IDE0eiIvPjwvc3ZnPg==';
 
         let currentIndex = 0;
         const engineBtn = document.getElementById('engineBtn');
-        const iconBox = document.getElementById('iconBox');
+        const engineIcon = document.getElementById('engineIcon');
         const searchInput = document.getElementById('searchInput');
 
-        // 切换引擎
+        // 初始化图标
+        function updateIcon() {
+            const currentEngine = engines[currentIndex];
+            engineIcon.style.opacity = '0'; // 淡出
+            
+            setTimeout(() => {
+                engineIcon.src = currentEngine.icon;
+                engineIcon.style.opacity = '1'; // 淡入
+            }, 150);
+        }
+
+        // 图片加载失败时的容错处理
+        engineIcon.onerror = function() {
+            this.src = defaultIcon;
+        };
+
+        // 切换引擎逻辑
         engineBtn.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % engines.length;
             updateIcon();
-            searchInput.focus();
+            searchInput.focus(); // 保持聚焦
         });
 
-        // 更新图标
-        function updateIcon() {
-            // 移除所有可能的图标类
-            iconBox.className = 'icon'; 
-            // 添加当前引擎对应的 CSS 类
-            iconBox.classList.add(engines[currentIndex].cssClass);
+        // 搜索执行逻辑
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                const targetUrl = engines[currentIndex].url + encodeURIComponent(query);
+                window.location.href = targetUrl;
+            }
         }
 
-        // 回车搜索
+        // 监听回车键
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                const query = searchInput.value.trim();
-                if (query) window.location.href = engines[currentIndex].url + encodeURIComponent(query);
+                performSearch();
             }
         });
 
-        // 自动聚焦
+        // 页面加载时初始化
+        updateIcon();
         searchInput.focus();
     </script>
 </body>
